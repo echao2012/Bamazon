@@ -13,5 +13,16 @@ CREATE TABLE products (
 );
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
-VALUES ("iPhone 7", "Electronics", 99.99, 50),
-       ("Chainsaw", "Tools", 149.99, 20);
+VALUES ("Wireless Keyboard", "Electronics", 19.99, 50),
+       ("20\" Chainsaw", "Tools", 149.99, 20),
+       ("Super Smash Bros. Ultimate", "Video Games", 56.99, 300),
+       ("Hot Wheels", "Toys", 5.17, 200),
+       ("Wi-Fi Router", "Electronics", 56.99, 80),
+       ("55\" 4K TV", "Electronics", 577.91, 25),
+       ("Yoga Mat", "Sports & Outdoors", 12.99, 95),
+       ("Coffee Maker", "Home & Kitchen", 79.99, 72),
+       ("Cast Iron Skillet", "Home & Kitchen", 35.25, 124),
+       ("Assorted Pens, 24-count", "Office Supplies", "3.43", 204);
+       
+       
+SELECT * FROM products;
