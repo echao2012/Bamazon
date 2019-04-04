@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/echao2012/Bamazon#readme",
   "dependencies": {
+    "chalk": "^2.4.2",
     "dotenv": "^7.0.0",
     "inquirer": "^6.2.2",
     "mysql": "^2.16.0"
