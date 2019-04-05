@@ -3,7 +3,6 @@ const chalk = require("chalk");
 require("dotenv").config();
 const inquirer = require("inquirer");
 const mysql = require("mysql");
-const display = require("./displayProducts.js");
 
 // Import MySQL database credentials
 const keys = require("./keys.js");
@@ -44,7 +43,8 @@ function mainMenu() {
 function getAllProducts() {
     connection.query("SELECT * FROM products", function(err, res) {
         if(err) throw err;
-        display.displayProducts(res);
+        const transformed = res.reduce((acc, {item_id, ...x}) => { acc[item_id] = x; return acc}, {});
+        console.table(transformed);
         selectProduct(res.length - 1);
     });
 }
@@ -54,7 +54,7 @@ function selectProduct(numProducts) {
     inquirer.prompt([
         {
             name: "id",
-            message: "What is the ID of the item you would like to purchase?",
+            message: "What is the index of the item you would like to purchase?",
             validate: function(value) {
                 return !isNaN(value) && value > 0 && value <= numProducts;
             }
@@ -103,8 +103,3 @@ function purchaseProduct(itemId, purchaseQuantity) {
         }
     })
 }
-
-// Return a variable amount of characters in a string
-String.prototype.repeat = function(length) {
-    return Array(length + 1).join(this);
-};

@@ -3,7 +3,6 @@ const chalk = require("chalk");
 require("dotenv").config();
 const inquirer = require("inquirer");
 const mysql = require("mysql");
-const display = require("./displayProducts.js");
 
 // Import MySQL database credentials
 const keys = require("./keys.js");
@@ -53,7 +52,8 @@ function mainMenu() {
 function getAllProducts() {
     connection.query("SELECT * FROM products", function(err, res) {
         if(err) throw err;
-        display.displayProducts(res);
+        const transformed = res.reduce((acc, {item_id, ...x}) => { acc[item_id] = x; return acc}, {});
+        console.table(transformed);
         mainMenu();
     });
 }
@@ -61,7 +61,8 @@ function getAllProducts() {
 function getLowInventory() {
     connection.query("SELECT * FROM products WHERE stock_quantity < 5", function(err, res) {
         if(err) throw err;
-        display.displayProducts(res);
+        const transformed = res.reduce((acc, {item_id, ...x}) => { acc[item_id] = x; return acc}, {});
+        console.table(transformed);
         mainMenu();
     })
 }
