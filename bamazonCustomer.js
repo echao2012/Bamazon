@@ -7,6 +7,9 @@ const mysql = require("mysql");
 // Import MySQL database credentials
 const keys = require("./keys.js");
 
+// Holds the number of products
+let numProducts;
+
 // Create the MySQL database connection
 const connection = mysql.createConnection({
     host: "localhost",
@@ -43,13 +46,19 @@ function mainMenu() {
 function getAllProducts() {
     connection.query("SELECT * FROM products", function(err, res) {
         if(err) throw err;
+
+        // Display the table of products
         const transformed = res.reduce((acc, {item_id, ...x}) => { acc[item_id] = x; return acc}, {});
         console.table(transformed);
-        selectProduct(res.length - 1);
+
+        // Store the number of products
+        numProducts = res.length - 1;
+
+        selectProduct();
     });
 }
 
-function selectProduct(numProducts) {
+function selectProduct() {
     // Ask the user for a product ID and amount they want to purchase
     inquirer.prompt([
         {
