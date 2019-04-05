@@ -48,11 +48,11 @@ function getAllProducts() {
         if(err) throw err;
 
         // Display the table of products
-        const transformed = res.reduce((acc, {item_id, ...x}) => { acc[item_id] = x; return acc}, {});
+        const transformed = res.reduce((acc, {item_id, ...x}) => { acc[item_id] = x; return acc }, {});
         console.table(transformed);
 
         // Store the number of products
-        numProducts = res.length - 1;
+        numProducts = res.length;
 
         selectProduct();
     });

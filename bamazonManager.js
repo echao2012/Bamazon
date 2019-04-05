@@ -60,11 +60,11 @@ function getAllProducts(cb) {
         if(err) throw err;
 
         // Display the product table
-        const transformed = res.reduce((acc, {item_id, ...x}) => { acc[item_id] = x; return acc}, {});
+        const transformed = res.reduce((acc, {item_id, ...x}) => { acc[item_id] = x; return acc }, {});
         console.table(transformed);
 
         // Store the number of products
-        numProducts = res.length - 1;
+        numProducts = res.length;
 
         cb();
     });
@@ -77,10 +77,10 @@ function getLowInventory() {
         if (res.length <= 0) {
             console.log(chalk.red("\nNothing to display."));
         } else {
-            const transformed = res.reduce((acc, {item_id, ...x}) => { acc[item_id] = x; return acc}, {});
+            const transformed = res.reduce((acc, {item_id, ...x}) => { acc[item_id] = x; return acc }, {});
             console.table(transformed);
         }
-        
+
         mainMenu();
     })
 }

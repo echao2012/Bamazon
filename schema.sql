@@ -40,3 +40,8 @@ VALUES ("Electronics", 60000),
 
 SELECT * FROM products;
 SELECT * FROM departments;
+
+SELECT department_id, departments.department_name, over_head_costs, SUM(product_sales) product_sales
+FROM departments
+INNER JOIN products ON departments.department_name = products.department_name
+GROUP BY department_id;
