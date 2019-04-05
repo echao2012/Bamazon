@@ -56,7 +56,7 @@ function mainMenu() {
 }
 
 function getAllProducts(cb) {
-    connection.query("SELECT * FROM products", function(err, res) {
+    connection.query("SELECT item_id, product_name, department_name, price, stock_quantity FROM products", function(err, res) {
         if(err) throw err;
 
         // Display the product table
@@ -71,10 +71,16 @@ function getAllProducts(cb) {
 }
 
 function getLowInventory() {
-    connection.query("SELECT * FROM products WHERE stock_quantity < 5", function(err, res) {
+    connection.query("SELECT item_id, product_name, department_name, price, stock_quantity FROM products WHERE stock_quantity < 5", function(err, res) {
         if(err) throw err;
-        const transformed = res.reduce((acc, {item_id, ...x}) => { acc[item_id] = x; return acc}, {});
-        console.table(transformed);
+
+        if (res.length <= 0) {
+            console.log(chalk.red("\nNothing to display."));
+        } else {
+            const transformed = res.reduce((acc, {item_id, ...x}) => { acc[item_id] = x; return acc}, {});
+            console.table(transformed);
+        }
+        
         mainMenu();
     })
 }

@@ -44,7 +44,7 @@ function mainMenu() {
 }
 
 function getAllProducts() {
-    connection.query("SELECT * FROM products", function(err, res) {
+    connection.query("SELECT item_id, product_name, department_name, price, stock_quantity FROM products", function(err, res) {
         if(err) throw err;
 
         // Display the table of products
@@ -86,6 +86,11 @@ function purchaseProduct(itemId, purchaseQuantity) {
         if(err) throw err;
         
         const item = resSelect[0];
+        const total = purchaseQuantity * item.price;
+
+        if(item.product_sales === null) {
+            console.log("HERE");
+        }
 
         // Check that there is enough in stock
         if(item.stock_quantity >= purchaseQuantity) {
@@ -93,7 +98,8 @@ function purchaseProduct(itemId, purchaseQuantity) {
             connection.query("UPDATE products SET ? WHERE ?",
                 [
                     {
-                        stock_quantity: item.stock_quantity - purchaseQuantity
+                        stock_quantity: item.stock_quantity - purchaseQuantity,
+                        product_sales: (item.product_sales + total).toFixed(2)
                     },
                     {
                         item_id: itemId
@@ -101,7 +107,6 @@ function purchaseProduct(itemId, purchaseQuantity) {
                 ],
                 function(err, resUpdate) {
                     if(err) throw err;
-                    const total = purchaseQuantity * item.price;
                     console.log(chalk.green("\nYou purchased " + purchaseQuantity + " of " + item.product_name));
                     console.log(chalk.green("Your order total is $" + total.toFixed(2)));
                     mainMenu();
