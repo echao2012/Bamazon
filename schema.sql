@@ -32,16 +32,8 @@ VALUES ("Wireless Keyboard", "Electronics", 19.99, 50),
        ("Assorted Pens, 24-count", "Office Supplies", "3.43", 204);
 
 INSERT INTO departments (department_name, over_head_costs)
-VALUES ("Electronics", 60000),
+VALUES ("Electronics", 10000),
        ("Tools", 15000),
        ("Toys", 20000),
-       ("Office Supplies", 10000),
+       ("Office Supplies", 5000),
        ("Home & Kitchen", 35000);
-
-SELECT * FROM products;
-SELECT * FROM departments;
-
-SELECT department_id, departments.department_name, over_head_costs, SUM(product_sales) product_sales
-FROM departments
-INNER JOIN products ON departments.department_name = products.department_name
-GROUP BY department_id;

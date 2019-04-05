@@ -37,6 +37,7 @@ function mainMenu() {
                 viewSales();
                 break;
             case "CREATE NEW DEPARTMENT":
+                addDepartment();
                 break;
             default:
                 connection.end();
@@ -49,7 +50,7 @@ function viewSales() {
     connection.query(`
         SELECT department_id, departments.department_name, over_head_costs, SUM(product_sales) product_sales, SUM(product_sales) - over_head_costs total_profit
         FROM departments
-        INNER JOIN products ON departments.department_name = products.department_name
+        LEFT JOIN products ON departments.department_name = products.department_name
         GROUP BY department_id;`,
         function(err, res) {
             if(err) throw err;
@@ -60,4 +61,30 @@ function viewSales() {
 
             mainMenu();
         });
+}
+
+function addDepartment() {
+    // Ask to enter department info
+    inquirer.prompt([
+        {
+            name: "department_name",
+            message: "What is the new department's name?",
+            validate: function(value) {
+                return value != "";
+            }
+        },
+        {
+            name: "over_head_costs",
+            message: "What is the overhead cost of this department?",
+            validate: function(value) {
+                return !isNaN(value) && value >= 0;
+            }
+        }
+    ]).then(function(resInquirer) {
+        connection.query("INSERT INTO departments SET ?", resInquirer, function(err, resQuery) {
+            if(err) throw err;
+            console.log(chalk.green("\nAdded " + resInquirer.department_name + " to departments"));
+            mainMenu();
+        })
+    });
 }
